@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import * as chroma from 'chroma-js';
+import {Color} from './ColorModel'
 
 @Component({
   selector: 'app-root',
