@@ -7,14 +7,16 @@ export class Color {
   textColor: string;
   isHovered: boolean;
   visible: boolean;
+  clipped: boolean;
 
-  constructor(color: string, isLocked: boolean, backgroundColor: string, textColor: string, isHovered: boolean, visible: boolean) {
-    this.color = color;
-    this.isLocked = isLocked;
-    this.backgroundColor = backgroundColor;
-    this.textColor = textColor;
-    this.isHovered = isHovered;
-    this.visible = visible;
+  constructor() {
+    this.color = chroma.random().hex();
+    this.isLocked = false;
+    this.backgroundColor = this.color;
+    this.textColor = chroma(this.backgroundColor).luminance() > 0.6 ? '#232323' : '#ffffff';
+    this.isHovered = false;
+    this.visible = true;
+    this.clipped = false;
   }
 
   toggleLock(): boolean {
@@ -22,16 +24,21 @@ export class Color {
     return this.isLocked;
   }
   darken(): void {
-    this.color = chroma(this.color).darken(0.2).hex();
-    this.backgroundColor = this.color
+    if(!this.isLocked) {
+      this.color = chroma(this.color).darken(0.2).hex();
+      this.backgroundColor = this.color;
+      this.textColor = chroma(this.backgroundColor).luminance() > 0.6 ? '#232323' : '#ffffff';
+    }
   }
   brighten(): void {
-    this.color = chroma(this.color).brighten(0.2).hex();
-    this.backgroundColor = this.color;
+    if(!this.isLocked) {
+      this.color = chroma(this.color).brighten(0.2).hex();
+      this.backgroundColor = this.color;
+      this.textColor = chroma(this.backgroundColor).luminance() > 0.6 ? '#232323' : '#ffffff';
+    }
   }
-  getLuminance(): string {
-    const luminance = chroma(this.backgroundColor).luminance();
-    return luminance > 0.6 ? '#000000' : '#ffffff';
+  getLuminance() {
+    this.textColor = chroma(this.backgroundColor).luminance() > 0.6 ? '#232323' : '#ffffff';
   }
 
 }
