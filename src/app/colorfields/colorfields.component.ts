@@ -48,8 +48,11 @@ export class ColorfieldsComponent implements OnInit{
   }
 
   refreshAllFields(){
-    let newColors = this.colors.map(() => new Color())
-    this.colors = [...newColors];
+    this.colors.forEach((color, index) => {
+      if (!color.isLocked) {
+        this.colors[index] = new Color();
+      }
+    });
   }
 
   copyToClipboard(color: Color) {
